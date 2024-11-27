@@ -145,9 +145,9 @@ resource "kubernetes_pod" "main" {
       dynamic "volume_mount" {
         for_each = var.persistence.mounts
         content {
-          name       = volume_mount.value.name
+          name       = replace(replace(volume_mount.value.name, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
           mount_path = replace(replace(volume_mount.value.path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
-          sub_path   = volume_mount.value.sub_path
+          sub_path   = replace(replace(volume_mount.value.sub_path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
           read_only  = volume_mount.value.read_only
         }
       }
@@ -182,9 +182,9 @@ resource "kubernetes_pod" "main" {
     dynamic "volume" {
       for_each = var.persistence.host_paths
       content {
-        name = volume.value.name
+        name = replace(replace(volume.value.name, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
         host_path {
-          path = volume.value.host_path
+          path = replace(replace(volume.value.host_path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
         }
       }
     }
