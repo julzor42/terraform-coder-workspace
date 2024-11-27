@@ -145,9 +145,9 @@ resource "kubernetes_pod" "main" {
       dynamic "volume_mount" {
         for_each = var.local
         content {
-          name       = volume_mount.name
-          mount_path = replace(replace(volume_mount.path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
-          read_only  = volume_mount.read_only
+          name       = volume_mount.value.name
+          mount_path = replace(replace(volume_mount.value.path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
+          read_only  = volume_mount.value.read_only
         }
       }
     }
@@ -181,9 +181,9 @@ resource "kubernetes_pod" "main" {
     dynamic "volume" {
       for_each = var.local
       content {
-        name = volume_mount.name
+        name = volume_mount.value.name
         host_path {
-          path = volume_mount.host_path
+          path = volume_mount.value.host_path
         }
       }
     }
