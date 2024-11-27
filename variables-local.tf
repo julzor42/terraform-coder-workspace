@@ -4,7 +4,7 @@ variable "local" {
     path         = string
     host_path    = string
     read_only    = optional(bool, false)
-  })
+  })[]
 
   default = []
 }
