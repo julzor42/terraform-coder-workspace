@@ -143,7 +143,7 @@ resource "kubernetes_pod" "main" {
       }
 
       dynamic "volume_mount" {
-        for_each = var.persistence ? var.persistence.mounts : []
+        for_each = var.persistence.mounts
         content {
           name       = volume_mount.value.name
           mount_path = replace(replace(volume_mount.value.path, "$USER", data.coder_workspace_owner.me.name), "$WORKSPACE", data.coder_workspace.me.name)
@@ -180,11 +180,11 @@ resource "kubernetes_pod" "main" {
     }
 
     dynamic "volume" {
-      for_each = var.persistence ? var.persistence.host_paths : []
+      for_each = var.persistence.host_paths
       content {
-        name = volume_mount.value.name
+        name = volume.value.name
         host_path {
-          path = volume_mount.value.host_path
+          path = volume.value.host_path
         }
       }
     }
