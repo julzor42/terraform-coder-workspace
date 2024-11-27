@@ -180,9 +180,11 @@ resource "kubernetes_pod" "main" {
 
     dynamic "volume" {
       for_each = var.local
-      name = volume_mount.name
-      host_path {
-        path = volume_mount.host_path
+      content {
+        name = volume_mount.name
+        host_path {
+          path = volume_mount.host_path
+        }
       }
     }
 
